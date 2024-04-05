@@ -40,8 +40,9 @@ model Set {
 }
 
 model User {
-  id       Int         @id @default(autoincrement())
-  email    String      @unique
-  name     String?
-  sets     Set[]
+  id           Int         @id @default(autoincrement())
+  email        String      @unique
+  name         String
+  refreshToken String?
+  sets         Set[]
 }
