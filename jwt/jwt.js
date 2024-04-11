@@ -1,17 +1,16 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
+import jwt from 'jsonwebtoken';
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: '1800s' });
 }
 
 function generateRefreshToken(user) {
-  return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: '1800s' });
+  return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: '1h' });
 }
 
-const jwt = require('jsonwebtoken');
-
-function authenticateToken(req, res, next) {
+export function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 

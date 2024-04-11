@@ -6,7 +6,7 @@ import passport from 'passport';
 router.get('/', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('/');
+        res.redirect('http://localhost:3000/user');
 });
 
 export default router;
