@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma.js'
 
-export async function getUserFromString (email) {
+export async function getUserFromEmail (email) {
     const user = await prisma.user.findFirstOrThrow(
       {
         where: {
