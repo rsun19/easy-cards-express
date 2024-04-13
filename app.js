@@ -10,6 +10,7 @@ import usersRouter from './routes/users.js';
 import testAPIRouter from './routes/testAPI.js';
 import google from './routes/google.js';
 import googleCallback from './routes/googleCallback.js';
+import requestToken from './routes/requestToken.js';
 import { fileURLToPath } from 'url';
 import passport from 'passport'
 import dotenv from 'dotenv';
@@ -39,10 +40,11 @@ app.use(session({
 app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/auth/google", google);
 app.use("/auth/google/callback", googleCallback);
+app.use("/auth/token/request", requestToken);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
