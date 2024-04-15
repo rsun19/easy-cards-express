@@ -1,9 +1,10 @@
 import express from 'express';
+import { generateAccessToken } from '../jwt/jwt.js';
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-    
-    res.send('API is working properly');
-});
+router.get('/', authenticateToken, async (req, res) => {
+    const token = generateAccessToken(req.user);
+    return token;
+})
 
 export default router;
