@@ -11,7 +11,6 @@ export async function insertUser (email, username) {
       id: userDB.id,
       email: userDB.email,
       name: userDB.name,
-      sets: null
     }
     return user
 }

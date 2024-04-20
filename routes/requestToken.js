@@ -15,6 +15,7 @@ router.post('/', async function(req, res, next) {
         const userName = await getRandomUsername(email);
         user = await insertUser(email, userName);   
     }
+    const unixTimestampInSeconds = Math.floor(Date.now() / 1000);
     const accessToken = generateAccessToken(email);
     const refreshToken = generateRefreshToken(email);
     const userInfo = {
@@ -23,8 +24,11 @@ router.post('/', async function(req, res, next) {
         name: user.name,
         sets: user.sets,
         accessToken: accessToken,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        accessTokenExpires: unixTimestampInSeconds + 1800,
+        refreshTokenExpires: unixTimestampInSeconds + 2592000
     };
+    console.log(JSON.stringify(userInfo));
     res.send(JSON.stringify(userInfo));
 });
 

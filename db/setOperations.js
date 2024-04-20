@@ -24,14 +24,13 @@ export async function insertSet (set) {
   return set;
 }
 
-export async function connectSetToUser (id, set) {
-  const setInfo = await insertSet(set);
+export async function connectSetToUser (userId, setId) {
   const insertSets = await prisma.user.update({
-    where: { id },
+    where: { userId },
     data: {
       sets: {
         connect:{
-          id: setInfo.id
+          id: setId
         },
       },
     },

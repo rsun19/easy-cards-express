@@ -16,8 +16,9 @@ datasource db {
 model Answer {
   id          Int     @id @default(autoincrement())
   answer      String
-  isCorrect   Boolean  @default(false)
-  question    Question @relation(fields: [questionId], references: [id])
+  isCorrect   Boolean  @default(true)
+  type        String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  Int
 }
 
@@ -25,7 +26,8 @@ model Question {
   id       Int    @id @default(autoincrement())
   question String
   answers  Answer[]
-  user     Set @relation(fields: [setId], references: [id])
+  type     String
+  user     Set @relation(fields: [setId], references: [id], onDelete: Cascade)
   setId    Int
 }
 
@@ -34,8 +36,9 @@ model Set {
   name         String
   subject      String?
   questions    Question[]
+  public       Boolean  @default(false)
   visits       Int?
-  user         User @relation(fields: [userId], references: [id])
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
 }
 
