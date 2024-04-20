@@ -1,10 +1,14 @@
 import express from 'express';
-import { generateAccessToken } from '../jwt/jwt.js';
+import { generateAccessToken, authenticateRefreshToken } from '../jwt/jwt.js';
 var router = express.Router();
 
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', authenticateRefreshToken, async (req, res) => {
     const token = generateAccessToken(req.user);
-    return token;
+    const cookie = req.body.cookie;
+    const cookieData = JSON.parse(req.body.cookie);
+    cookieData['accessToken'] = token;
+    console.log(JSON.stringify(userInfo));
+    res.status(200).send(JSON.stringify(cookieData));
 })
 
 export default router;

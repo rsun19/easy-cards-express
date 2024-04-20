@@ -29,7 +29,7 @@ router.post('/', async function(req, res, next) {
         refreshTokenExpires: unixTimestampInSeconds + 2592000
     };
     console.log(JSON.stringify(userInfo));
-    res.send(JSON.stringify(userInfo));
+    res.status(200).send(JSON.stringify(userInfo));
 });
 
 export default router;
