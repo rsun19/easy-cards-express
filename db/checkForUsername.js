@@ -1,6 +1,6 @@
-import prisma from '../lib/prisma'
+import prisma from '../lib/prisma.js'
 
-export async function getUsername (username: string): Promise<any> {
+export async function getUsername (username) {
     const user = await prisma.user.findFirstOrThrow(
       {
         where: {
@@ -9,4 +9,4 @@ export async function getUsername (username: string): Promise<any> {
       }
     )
     return user
-  }
+}

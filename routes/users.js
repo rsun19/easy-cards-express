@@ -1,9 +1,11 @@
-var express = require('express');
+import express from 'express';
 var router = express.Router();
+import { authenticateToken } from '../jwt/jwt.js';
+import { getUserFromID } from '../db/getUser.js';
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', authenticateToken, async (req, res) => {
+  const user = await getUserFromID(req.user);
+  res.json({ id: user.id, email: user.email, name: user.name })
+})
 
-module.exports = router;
+export default router;
