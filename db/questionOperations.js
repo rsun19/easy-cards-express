@@ -19,7 +19,6 @@ export async function insertQuestion (question) {
   const question = await prisma.question.create({
     data: {
       question: question.name,
-      type: question.type
     }
   })
   return question;

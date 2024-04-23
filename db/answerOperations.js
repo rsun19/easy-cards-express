@@ -20,7 +20,6 @@ export async function insertAnswer (answer) {
     data: {
       answer: answer.name,
       isCorrect: answer.correct,
-      type: answer.type
     }
   })
   return answer;

@@ -1,6 +1,5 @@
 import express from 'express';
 var router = express.Router();
-import { getUserFromID } from '../db/getUser.js'
 import { connectSetToUser, insertSet } from '../db/setOperations.js'
 import { connectQuestionToSet, insertQuestion } from '../db/questionOperations.js';
 import { connectAnswerToQuestion, insertAnswer } from '../db/answerOperations.js';
@@ -13,19 +12,20 @@ async function connectAllAnswers(questionId, answer_list) {
 
 router.post('/', authenticateToken, async function(req, res, next) {
     const userId = req.body.user;
-    const set_req = JSON.parse(req.body.set);
-    const question_req = JSON.parse(req.body.question);
-    const answers_req = JSON.parse(req.body.answers);
+    const setInfo = JSON.parse(req.body.setMap);
     try {
         const answer_list = [];
-        for (let i = 0; i < answers_req.length; ++i) {
-            const answer = await insertAnswer(answers_req[i]);
-            answer_list.push(answer);
-        }
-        question = await insertQuestion(question_req);
-        set = await insertSet(set_req);
-        await connectAllAnswers(answer_list, question.id);
-        await connectQuestionToSet(set.id, question.id);
+        setInfo.cards.forEach(async (card) => {
+            question_arr = card[0]
+            answer_arr = card[1]
+            for (let i = 0; i < answer_arr.length; ++i) {
+                const answer = await insertAnswer({name: answer_arr[i]});
+                answer_list.push(answer);
+            }
+            question = await insertQuestion({name: question_arr});
+            await connectAllAnswers(answer_list, question.id);
+            await connectQuestionToSet(set.id, question.id);
+        });
         await connectSetToUser(userId, set.id);
     } catch (error) {
         res.status(403).send("Error putting set in database")
