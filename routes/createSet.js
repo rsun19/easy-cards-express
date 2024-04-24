@@ -11,8 +11,12 @@ async function connectAllAnswers(questionId, answer_list) {
 }
 
 router.post('/', authenticateToken, async function(req, res, next) {
-    const userId = req.body.user;
-    const setInfo = JSON.parse(req.body.setMap);
+    const userEmail = req.user;
+    const userId = JSON.parse(req.body.user);
+    const setInfo = JSON.parse(req.body.setMap.cards);
+    if (req.user !== userId.email) {
+        res.status(401).send("JWT mismatch");
+    }
     try {
         const answer_list = [];
         setInfo.cards.forEach(async (card) => {
@@ -26,6 +30,7 @@ router.post('/', authenticateToken, async function(req, res, next) {
             await connectAllAnswers(answer_list, question.id);
             await connectQuestionToSet(set.id, question.id);
         });
+        set = await insertSet({ name: req.body.setMap.title })
         await connectSetToUser(userId, set.id);
     } catch (error) {
         res.status(403).send("Error putting set in database")

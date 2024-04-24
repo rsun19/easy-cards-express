@@ -10,6 +10,7 @@ import usersRouter from './routes/users.js';
 import testAPIRouter from './routes/testAPI.js';
 import requestToken from './routes/requestToken.js';
 import refreshToken from './routes/refreshToken.js';
+import createSet from './routes/createSet.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
@@ -37,6 +38,7 @@ app.use('/api/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/auth/token/request", requestToken);
 app.use("/auth/token/refresh", refreshToken);
+app.use("/api/set/create", createSet)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
