@@ -3,6 +3,7 @@ var router = express.Router();
 import { connectSetToUser, insertSet } from '../db/setOperations.js'
 import { connectQuestionToSet, insertQuestion } from '../db/questionOperations.js';
 import { connectAnswerToQuestion, insertAnswer } from '../db/answerOperations.js';
+import { authenticateToken } from '../jwt/jwt.js';
 
 async function connectAllAnswers(questionId, answer_list) {
     for (let i = 0; i < answer_list.length; ++i) {

@@ -16,12 +16,12 @@ export async function getQuestionsFromSetId(id) {
 } 
 
 export async function insertQuestion (question) {
-  const question = await prisma.question.create({
+  const questionCreate = await prisma.question.create({
     data: {
       question: question.name,
     }
   })
-  return question;
+  return questionCreate;
 }
 
 export async function connectQuestionToSet (setId, questionId) {

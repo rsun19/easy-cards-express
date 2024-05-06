@@ -16,13 +16,13 @@ export async function getAnswersFromQuestionId(id) {
 } 
 
 export async function insertAnswer (answer) {
-  const answer = await prisma.answer.create({
+  const answerCreate = await prisma.answer.create({
     data: {
       answer: answer.name,
       isCorrect: answer.correct,
     }
   })
-  return answer;
+  return answerCreate;
 }
 
 export async function connectAnswerToQuestion (questionId, answerId) {
