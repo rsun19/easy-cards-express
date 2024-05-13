@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateAccessToken, generateRefreshToken } from '../jwt/jwt.js';
+import { generateAccessToken, generateRefreshToken, decodeToken } from '../jwt/jwt.js';
 var router = express.Router();
 import { insertUser } from '../db/insertUser.js';
 import { getRandomUsername } from '../lib/usernameGenerator.js'
@@ -15,18 +15,16 @@ router.post('/', async function(req, res, next) {
         const userName = await getRandomUsername(email);
         user = await insertUser(email, userName);   
     }
-    const unixTimestampInSeconds = Math.floor(Date.now() / 1000);
-    const accessToken = generateAccessToken(email);
-    const refreshToken = generateRefreshToken(email);
+    // const unixTimestampInSeconds = Math.floor(Date.now() / 1000);
+    const accessToken = generateAccessToken(user.id);
+    const decodedAccessToken = decodeToken(accessToken);
+    const refreshToken = generateRefreshToken(user.id);
+    const decodedRefreshToken = decodeToken(refreshToken);
     const userInfo = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        sets: user.sets,
         accessToken: accessToken,
         refreshToken: refreshToken,
-        accessTokenExpires: unixTimestampInSeconds + 1800,
-        refreshTokenExpires: unixTimestampInSeconds + 2592000
+        accessTokenExpires: decodedAccessToken.exp,
+        refreshTokenExpires: decodedRefreshToken.exp
     };
     console.log(JSON.stringify(userInfo));
     res.status(200).send(JSON.stringify(userInfo));

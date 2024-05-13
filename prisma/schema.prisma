@@ -17,7 +17,6 @@ model Answer {
   id          Int     @id @default(autoincrement())
   answer      String
   isCorrect   Boolean  @default(true)
-  type        String
   question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  Int
 }
@@ -26,8 +25,7 @@ model Question {
   id       Int    @id @default(autoincrement())
   question String
   answers  Answer[]
-  type     String
-  user     Set @relation(fields: [setId], references: [id], onDelete: Cascade)
+  set     Set @relation(fields: [setId], references: [id], onDelete: Cascade)
   setId    Int
 }
 
