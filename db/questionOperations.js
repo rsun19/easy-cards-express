@@ -18,7 +18,10 @@ export async function getQuestionsFromSetId(id) {
 export async function insertQuestion (question) {
   const questionCreate = await prisma.question.create({
     data: {
-      question: question.name,
+      question: question.question,
+      set: {
+        connect: { id: question.setId }
+      }
     }
   })
   return questionCreate;
@@ -26,7 +29,7 @@ export async function insertQuestion (question) {
 
 export async function connectQuestionToSet (setId, questionId) {
   const insertQuestion = await prisma.question.update({
-    where: { setId },
+    where: { id: setId },
     data: {
       questions: {
         connect:{

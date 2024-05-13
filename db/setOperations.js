@@ -18,7 +18,10 @@ export async function getSetsFromUserId(id) {
 export async function insertSet (set) {
   const setCreate = await prisma.set.create({
     data: {
-      name: set.name
+      name: set.name,
+      user: {
+        connect: { id: set.user }
+      }
     }
   })
   return setCreate;
@@ -26,7 +29,7 @@ export async function insertSet (set) {
 
 export async function connectSetToUser (userId, setId) {
   const insertSets = await prisma.user.update({
-    where: { userId },
+    where: { id: userId },
     data: {
       sets: {
         connect:{
@@ -34,6 +37,7 @@ export async function connectSetToUser (userId, setId) {
         },
       },
     },
+    include: { sets: true }
   })
   return insertSets;
 }

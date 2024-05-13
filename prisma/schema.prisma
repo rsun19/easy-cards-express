@@ -25,7 +25,7 @@ model Question {
   id       Int    @id @default(autoincrement())
   question String
   answers  Answer[]
-  user     Set @relation(fields: [setId], references: [id], onDelete: Cascade)
+  set     Set @relation(fields: [setId], references: [id], onDelete: Cascade)
   setId    Int
 }
 

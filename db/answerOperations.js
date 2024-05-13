@@ -19,7 +19,10 @@ export async function insertAnswer (answer) {
   const answerCreate = await prisma.answer.create({
     data: {
       answer: answer.name,
-      isCorrect: answer.correct,
+      isCorrect: answer.correct ?? false,
+      question: {
+        connect: { id: answer.questionId }
+      }
     }
   })
   return answerCreate;
@@ -27,7 +30,7 @@ export async function insertAnswer (answer) {
 
 export async function connectAnswerToQuestion (questionId, answerId) {
   const insertAnswer = await prisma.question.update({
-    where: { questionId },
+    where: { id: questionId },
     data: {
       answers: {
         connect:{
