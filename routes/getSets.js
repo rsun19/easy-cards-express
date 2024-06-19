@@ -1,26 +1,22 @@
 import express from 'express';
 import { authenticateToken } from '../jwt/jwt.js';
-import prisma from '../lib/prisma.js'
+import { getAllUserSets } from '../db/getAllUserSets.js';
 
 var router = express.Router();
 
 router.get('/', authenticateToken, async function(req, res, next) {
   const userId = req.user;
-  const set = await prisma.user.findFirstOrThrow(
-      {
-        where: {
-          id: userId
-        },
-        include: {
-          sets: true
-        }
-      }
-    )
-  const responseMap = {
-    username: set.name,
-    sets: set.sets
+  console.log(userId)
+  try {
+    const set = await getAllUserSets(userId)
+    const responseMap = {
+      username: set.name,
+      sets: set.sets
+    }
+    res.status(200).send(JSON.stringify(responseMap));
+  } catch (e) {
+    res.status(404).send(JSON.stringify('Error fetching sets'))
   }
-  res.status(200).send(JSON.stringify(responseMap));
 });
 
 export default router;

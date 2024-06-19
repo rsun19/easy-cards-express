@@ -7,7 +7,6 @@ import { authenticateToken } from '../jwt/jwt.js';
 
 router.post('/', authenticateToken, async function(req, res, next) {
     const userId = req.user;
-    console.log(req.user)
     const setInfo = req.body.cards;
     var isError = false;
     try {
@@ -23,7 +22,6 @@ router.post('/', authenticateToken, async function(req, res, next) {
                 answer_list.push(answer);
             }
         });
-        await connectSetToUser(userId, set.id);
     } catch (error) {
         res.status(403).send("Error putting set in database");
         isError = true;
