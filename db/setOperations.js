@@ -41,3 +41,11 @@ export async function connectSetToUser (userId, setId) {
   })
   return insertSets;
 }
+
+export async function deleteSet(id) {
+  await prisma.set.delete({
+    where: {
+      id
+    }
+  });
+}

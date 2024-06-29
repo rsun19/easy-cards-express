@@ -4,14 +4,14 @@ import { getFlashcards } from '../db/getFlashcards.js';
 
 var router = express.Router();
 
-router.get('/', authenticateToken, async function(req, res, next) {
+router.get('/:id', authenticateToken, async function(req, res, next) {
   const userId = req.user;
-  const id = req.params.id;
+  const { id } = req.params;
   try {
-    const flashcards = await getFlashcards(id, userId)
+    const flashcards = await getFlashcards(Number(id), userId)
     res.status(200).send(JSON.stringify(flashcards));
   } catch (e) {
-    res.status(404).send(JSON.stringify('Error fetching flashcards'))
+    res.status(403).send(JSON.stringify('Error fetching flashcards'))
   }
 });
 

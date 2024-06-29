@@ -12,6 +12,7 @@ import requestToken from './routes/requestToken.js';
 import refreshToken from './routes/refreshToken.js';
 import createSet from './routes/createSet.js';
 import getSets from './routes/getSets.js';
+import deleteSet from './routes/deleteSet.js';
 import getFlashcardsForSet from './routes/getFlashcardsForSet.js';
 import updateUsername from './routes/updateUsername.js'
 import { fileURLToPath } from 'url';
@@ -44,7 +45,8 @@ app.use("/auth/token/refresh", refreshToken);
 app.use("/api/set/create", createSet);
 app.use("/api/sets/get", getSets);
 app.use("/api/username/update", updateUsername)
-app.use("/api/sets/flashcards/get/:id", getFlashcardsForSet)
+app.use("/api/sets/flashcards/get", getFlashcardsForSet)
+app.use("/api/set/delete", deleteSet);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
