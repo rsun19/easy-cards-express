@@ -15,6 +15,7 @@ import getSets from './routes/getSets.js';
 import deleteSet from './routes/deleteSet.js';
 import getFlashcardsForSet from './routes/getFlashcardsForSet.js';
 import updateUsername from './routes/updateUsername.js'
+import editSet from './routes/editSet.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
@@ -47,6 +48,7 @@ app.use("/api/sets/get", getSets);
 app.use("/api/username/update", updateUsername)
 app.use("/api/sets/flashcards/get", getFlashcardsForSet)
 app.use("/api/set/delete", deleteSet);
+app.use("/api/set/edit", editSet)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

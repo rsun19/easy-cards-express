@@ -27,6 +27,18 @@ export async function insertQuestion (question) {
   return questionCreate;
 }
 
+export async function updateQuestion (questionInfo) {
+  const updateQuestion = await prisma.question.update({
+    where: {
+      id: questionInfo.id
+    },
+    data: {
+      question: questionInfo.question
+    }
+  })
+  return updateQuestion;
+}
+
 export async function connectQuestionToSet (setId, questionId) {
   const insertQuestion = await prisma.question.update({
     where: { id: setId },
