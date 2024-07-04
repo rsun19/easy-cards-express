@@ -15,6 +15,20 @@ export async function getAnswersFromQuestionId(id) {
   return user
 } 
 
+export async function editAnswer(answerInfo) {
+  const answer = await prisma.answer.update(
+    {
+      where: {
+        id: answerInfo.id
+      },
+      data: {
+        answer: answerInfo.answer
+      }
+    }
+  );
+  return answer;
+}
+
 export async function insertAnswer (answer) {
   const answerCreate = await prisma.answer.create({
     data: {

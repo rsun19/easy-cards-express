@@ -15,16 +15,27 @@ export async function getSetsFromUserId(id) {
   return user
 } 
 
-export async function insertSet (set) {
+export async function insertSet (setInfo) {
   const setCreate = await prisma.set.create({
     data: {
-      name: set.name,
+      name: setInfo.name,
       user: {
-        connect: { id: set.user }
+        connect: { id: setInfo.user }
       }
     }
   })
   return setCreate;
+}
+
+export async function updateSetName (id, name) {
+  const setUpdateName = await prisma.set.update({
+    where: {
+      id: id
+    },
+    data: {
+      name: name
+    }
+  })
 }
 
 export async function connectSetToUser (userId, setId) {

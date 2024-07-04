@@ -15,6 +15,15 @@ export async function getQuestionsFromSetId(id) {
   return user
 } 
 
+export async function deleteQuestion (id) {
+  const deleteQuestion = await prisma.question.delete({
+    where: {
+      id
+    }
+  })
+  return deleteQuestion;
+}
+
 export async function insertQuestion (question) {
   const questionCreate = await prisma.question.create({
     data: {
@@ -25,6 +34,18 @@ export async function insertQuestion (question) {
     }
   })
   return questionCreate;
+}
+
+export async function updateQuestion (questionInfo) {
+  const updateQuestion = await prisma.question.update({
+    where: {
+      id: questionInfo.id
+    },
+    data: {
+      question: questionInfo.question
+    }
+  })
+  return updateQuestion;
 }
 
 export async function connectQuestionToSet (setId, questionId) {
