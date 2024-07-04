@@ -1,29 +1,32 @@
 import express from 'express';
 var router = express.Router();
-import { connectSetToUser, insertSet, updateSetName } from '../db/setOperations.js'
+import { updateSetName } from '../db/setOperations.js'
 import { insertQuestion, updateQuestion } from '../db/questionOperations.js';
 import { editAnswer, insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
 
 router.post('/', authenticateToken, async function(req, res, next) {
-    const editSetInfo = req.body.edit;
+    const editQuestionInfo = req.body.editQuestion;
+    const editAnswerInfo = req.body.editAnswer;
     const newSetInfo = req.body.new;
-    const { setInfo } = req.body
+    const setInfo = req.body.set;
     var isError = false;
     try {
-        editSetInfo.forEach(async (card) => {
-            const question = card.question
-            const answer = card.answer
-            await updateQuestion({id: card.questionId, question: question})
-            // for (let i = 0; i < answer.length; i++) {
-            await editAnswer({ id: card.answerId, answer: answer[0] })
-            // }
+        editQuestionInfo.forEach(async (card) => {
+            const question = card.question;
+            await updateQuestion({id: card.questionId, question: question});
+        })
+        editAnswerInfo.forEach(async (card) => {
+            const answer = card.answer;
+            await editAnswer({ id: card.answerId, answer: answer[0] });
         })
     } catch (error) {
+        console.log('first')
+        console.log(error)
         res.status(403).send("Error updating entries");
     }
     try {
-        const set = await updateSetName(setInfo.id, setInfo.name)
+        await updateSetName(setInfo.id, setInfo.name)
         newSetInfo.forEach(async (card) => {
             const question_arr = card.question;
             const answer_arr = card.answer;
@@ -34,6 +37,8 @@ router.post('/', authenticateToken, async function(req, res, next) {
             }
         });
     } catch (error) {
+        console.log('second')
+        console.log(error)
         res.status(403).send("Error putting set in database");
         isError = true;
     }
