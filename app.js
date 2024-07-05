@@ -19,7 +19,16 @@ import editSet from './routes/editSet.js';
 import deleteCard from './routes/deleteCard.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import createUser from './routes/createUser.js'
 dotenv.config({ path: '.env.local' });
+import { rateLimit } from 'express-rate-limit';
+
+const limiter = rateLimit({
+    windowMs: 30 * 1000, // 30 seconds
+    limit: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+})
 
 var app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -28,6 +37,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(cors());
+app.use(limiter);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,6 +61,7 @@ app.use("/api/sets/flashcards/get", getFlashcardsForSet)
 app.use("/api/set/delete", deleteSet);
 app.use("/api/set/edit", editSet);
 app.use("/api/card/delete", deleteCard);
+app.use("/api/user/create", createUser);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

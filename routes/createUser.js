@@ -6,14 +6,14 @@ import { getRandomUsername } from '../lib/usernameGenerator.js'
 import { getUserFromEmail } from '../db/getUser.js'  
 import { rateLimit } from 'express-rate-limit';
 
-const refreshLimiter = rateLimit({
+const signupLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
-    limit: 2,
+    limit: 4,
     standardHeaders: true,
     legacyHeaders: false,
 })
 
-router.post('/', refreshLimiter, async function(req, res, next) {
+router.post('/', signupLimiter, async function(req, res, next) {
     const email = req.body.email
     let user;
     try {

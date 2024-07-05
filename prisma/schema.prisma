@@ -17,16 +17,20 @@ model Answer {
   id          Int     @id @default(autoincrement())
   answer      String
   isCorrect   Boolean  @default(true)
+  userId      Int
   question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId  Int
+  createdAt   DateTime @default(now())
 }
 
 model Question {
-  id       Int    @id @default(autoincrement())
-  question String
-  answers  Answer[]
-  set      Set @relation(fields: [setId], references: [id], onDelete: Cascade)
-  setId    Int
+  id        Int    @id @default(autoincrement())
+  question  String
+  answers   Answer[]
+  userId    Int
+  set       Set @relation(fields: [setId], references: [id], onDelete: Cascade)
+  setId     Int
+  createdAt DateTime @default(now())
 }
 
 model Set {
@@ -37,13 +41,19 @@ model Set {
   public       Boolean  @default(false)
   visits       Int?
   user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  edit         String[]
+  visit        String[]
+  visitLink    String?
   userId       Int
+  createdAt    DateTime @default(now())
 }
 
 model User {
-  id           Int         @id @default(autoincrement())
-  email        String      @unique
-  name         String
-  refreshToken String?
-  sets         Set[]
+  id                 Int         @id @default(autoincrement())
+  email              String      @unique
+  name               String
+  refreshToken       String?
+  blacklistedTokens  String[]
+  sets               Set[]
+  createdAt          DateTime @default(now())
 }
