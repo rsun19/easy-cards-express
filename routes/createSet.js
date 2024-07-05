@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import { connectSetToUser, insertSet } from '../db/setOperations.js'
+import { insertSet } from '../db/setOperations.js'
 import { insertQuestion } from '../db/questionOperations.js';
 import { insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
@@ -16,9 +16,9 @@ router.post('/', authenticateToken, async function(req, res, next) {
             const question_arr = card[0];
             const answer_arr = card[1];
             const answerIndexCorrect = card[2];
-            const question = await insertQuestion({ question: question_arr, setId: set.id });
+            const question = await insertQuestion({ question: question_arr, setId: set.id }, userId);
             for (let i = 0; i < answer_arr.length; ++i) {
-                const answer = await insertAnswer({ name: answer_arr[i], questionId: question.id, isCorrect: answerIndexCorrect });
+                const answer = await insertAnswer({ name: answer_arr[i], questionId: question.id, isCorrect: answerIndexCorrect }, userId);
                 answer_list.push(answer);
             }
         });

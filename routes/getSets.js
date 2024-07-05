@@ -6,7 +6,6 @@ var router = express.Router();
 
 router.get('/', authenticateToken, async function(req, res, next) {
   const userId = req.user;
-  console.log(userId)
   try {
     const set = await getAllUserSets(userId)
     const responseMap = {

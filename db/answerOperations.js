@@ -15,7 +15,20 @@ export async function getAnswersFromQuestionId(id) {
   return user
 } 
 
-export async function editAnswer(answerInfo) {
+export async function getAnswer(id) {
+  const answerQuery = await prisma.answer.findFirstOrThrow({
+    where: {
+      id,
+    }
+  })
+  return answerQuery;
+}
+
+export async function editAnswer(answerInfo, userId) {
+  const answerQuery = await getAnswer(answerInfo.id);
+  if (answerQuery.userId !== userId) {
+    throw new Error('unauthorized');
+  }
   const answer = await prisma.answer.update(
     {
       where: {
@@ -29,10 +42,11 @@ export async function editAnswer(answerInfo) {
   return answer;
 }
 
-export async function insertAnswer (answer) {
+export async function insertAnswer (answer, userId) {
   const answerCreate = await prisma.answer.create({
     data: {
       answer: answer.name,
+      userId,
       isCorrect: answer.correct ?? false,
       question: {
         connect: { id: answer.questionId }

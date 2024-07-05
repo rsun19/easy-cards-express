@@ -27,15 +27,20 @@ export async function insertSet (setInfo) {
   return setCreate;
 }
 
-export async function updateSetName (id, name) {
+export async function updateSetName (id, name, userId) {
+  const findSet = await getSet(id);
+  if (findSet.userId !== userId) {
+    throw new Error('unauthorized')
+  }
   const setUpdateName = await prisma.set.update({
     where: {
-      id: id
+      id,
     },
     data: {
       name: name
     }
   })
+  return setUpdateName;
 }
 
 export async function connectSetToUser (userId, setId) {
@@ -53,7 +58,22 @@ export async function connectSetToUser (userId, setId) {
   return insertSets;
 }
 
-export async function deleteSet(id) {
+export async function getSet(id) {
+  const findQuestion = await prisma.set.findFirstOrThrow(
+    {
+      where: {
+        id
+      }
+    }
+  )
+  return findQuestion;
+}
+
+export async function deleteSet(id, userId) {
+  const findSet = await getSet(id);
+  if (findSet.userId !== userId) {
+    throw new Error('unauthorized')
+  }
   await prisma.set.delete({
     where: {
       id
