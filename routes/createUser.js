@@ -19,7 +19,6 @@ router.post('/', signupLimiter, async function(req, res, next) {
     try {
         user = await getUserFromEmail(email); 
     } catch (error) {
-        console.log(error);
         const userName = await getRandomUsername(email);
         user = await insertUser(email, userName);   
     }
@@ -33,7 +32,6 @@ router.post('/', signupLimiter, async function(req, res, next) {
         accessTokenExpires: decodedAccessToken.exp,
         refreshTokenExpires: decodedRefreshToken.exp
     };
-    console.log(JSON.stringify(userInfo));
     res.status(200).send(JSON.stringify(userInfo));
 });
 

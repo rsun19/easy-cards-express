@@ -23,12 +23,10 @@ router.post('/', authenticateToken, async function(req, res, next) {
             await editAnswer({ id: card.answerId, answer: answer[0] }, userId);
         })
     } catch (error) {
-        console.log('first')
-        console.log(error)
         res.status(403).send("Error updating entries");
     }
     try {
-        console.log(setUpdate);
+        (setUpdate);
         if (setUpdate) {
             await updateSetName(setInfo.id, setInfo.name, userId)
         }
@@ -42,8 +40,6 @@ router.post('/', authenticateToken, async function(req, res, next) {
             }
         });
     } catch (error) {
-        console.log('second')
-        console.log(error)
         res.status(403).send("Error putting set in database");
         isError = true;
     }

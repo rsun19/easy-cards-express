@@ -10,8 +10,6 @@ router.post('/', authenticateToken, async function(req, res, next) {
         await deleteQuestion(id, userId);
         res.status(201).send("Successfully deleted card");
     } catch (error) {
-        console.log('first')
-        console.log(error)
         res.status(403).send("Error deleting card");
     }
 });

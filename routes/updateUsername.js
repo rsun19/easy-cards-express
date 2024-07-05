@@ -7,7 +7,6 @@ import { updateUsername } from '../db/usernames/updateUsername.js';
 router.post('/', authenticateToken, async function(req, res, next) {
     const userId = req.user;
     const username = req.body.username;
-    console.log(username)
     try {
        await getUserFromUsername(username)
        res.status(403).send("Username is already taken");
