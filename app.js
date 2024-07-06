@@ -4,7 +4,6 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import session from 'express-session'
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import testAPIRouter from './routes/testAPI.js';
@@ -43,12 +42,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: process.env.PRIVATE_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: true }
-}));
 app.use('/', indexRouter);
 app.use('/api/username', usersRouter);
 app.use("/testAPI", testAPIRouter);
