@@ -45,8 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api/username', usersRouter);
 app.use("/testAPI", testAPIRouter);
-app.use("/auth/token/request", requestToken);
-app.use("/auth/token/refresh", refreshToken);
+app.use("/api/auth/token/request", requestToken);
+app.use("/api/auth/token/refresh", refreshToken);
 app.use("/api/set/create", createSet);
 app.use("/api/sets/get", getSets);
 app.use("/api/username/update", updateUsername)
