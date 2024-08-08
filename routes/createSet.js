@@ -8,7 +8,6 @@ import { authenticateToken } from '../jwt/jwt.js';
 router.post('/', authenticateToken, async function(req, res, next) {
     const userId = req.user;
     const setInfo = req.body.cards;
-    var isError = false;
     try {
         const set = await insertSet({ name: req.body.title, user: userId })
         const answer_list = [];
@@ -22,12 +21,10 @@ router.post('/', authenticateToken, async function(req, res, next) {
                 answer_list.push(answer);
             }
         });
-    } catch (error) {
-        res.status(403).send("Error putting set in database");
-        isError = true;
-    }
-    if (!isError) {
         res.status(200).send("Set created successfully");
+    } catch (error) {
+        console.log(error);
+        res.status(403).send("Error putting set in database");
     }
 });
 
