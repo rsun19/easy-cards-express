@@ -9,5 +9,4 @@ COPY . .
 EXPOSE 9000
 RUN chown -R node /usr/src/app
 USER node
-CMD source migrate-and-start.sh
-# CMD ["npm", "start"]
+CMD ["npm", "start"]
