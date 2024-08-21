@@ -4,7 +4,7 @@ import { getFlashcards } from '../db/getFlashcards.js';
 
 var router = express.Router();
 
-router.get('/:id', authenticateToken, async function(req, res, next) {
+router.get('/:id', authenticateToken, async function(req, res) {
   const userId = req.user;
   const { id } = req.params;
   try {

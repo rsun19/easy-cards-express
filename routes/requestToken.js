@@ -13,7 +13,7 @@ const refreshLimiter = rateLimit({
     legacyHeaders: false,
 })
 
-router.post('/', refreshLimiter, async function(req, res, next) {
+router.post('/', refreshLimiter, async function(req, res) {
     const email = req.body.email
     let user;
     try {
@@ -22,17 +22,21 @@ router.post('/', refreshLimiter, async function(req, res, next) {
         const userName = await getRandomUsername(email);
         user = await insertUser(email, userName);   
     }
-    const accessToken = generateAccessToken(user.id);
-    const decodedAccessToken = decodeToken(accessToken);
-    const refreshToken = generateRefreshToken(user.id);
-    const decodedRefreshToken = decodeToken(refreshToken);
-    const userInfo = {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        accessTokenExpires: decodedAccessToken.exp,
-        refreshTokenExpires: decodedRefreshToken.exp
-    };
-    res.status(200).send(JSON.stringify(userInfo));
+    try {
+        const accessToken = generateAccessToken(user.id);
+        const decodedAccessToken = decodeToken(accessToken);
+        const refreshToken = generateRefreshToken(user.id);
+        const decodedRefreshToken = decodeToken(refreshToken);
+        const userInfo = {
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            accessTokenExpires: decodedAccessToken.exp,
+            refreshTokenExpires: decodedRefreshToken.exp
+        };
+        res.status(200).send(JSON.stringify(userInfo));
+    } catch (e) {
+        res.status(404).send('Failed to create user');
+    }
 });
 
 export default router;

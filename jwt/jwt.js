@@ -3,12 +3,11 @@ dotenv.config({ path: '.env.local' });
 import jwt from 'jsonwebtoken';
 
 export function generateAccessToken(user) {
-  console.log(process.env.PRIVATE_KEY)
+  // console.log(process.env.PRIVATE_KEY)
   return jwt.sign({ user: user }, process.env.PRIVATE_KEY, { expiresIn: '1800s' });
 }
 
 export function generateRefreshToken(user) {
-  console.log(process.env.PRIVATE_KEY)
   return jwt.sign({ user: user }, process.env.PRIVATE_KEY, { expiresIn: '30d' });
 }
 

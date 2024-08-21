@@ -5,7 +5,7 @@ import { insertQuestion } from '../db/questionOperations.js';
 import { insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
 
-router.post('/', authenticateToken, async function(req, res, next) {
+router.post('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const setInfo = req.body.cards;
     try {
