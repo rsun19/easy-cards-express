@@ -55,5 +55,11 @@ model User {
   refreshToken       String?
   blacklistedTokens  String[]
   sets               Set[]
+  viewShared         Int[]
+  editShared         Int[]
+  banned             Boolean @default(false)
+  bannedReason       String?
+  deactivated        Boolean @default(false)
+  deleted            Boolean @default(false)
   createdAt          DateTime @default(now())
 }

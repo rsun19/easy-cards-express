@@ -4,7 +4,7 @@ import { getAllUserSets } from '../db/getAllUserSets.js';
 
 var router = express.Router();
 
-router.get('/', authenticateToken, async function(req, res, next) {
+router.get('/', authenticateToken, async function(req, res) {
   const userId = req.user;
   try {
     const set = await getAllUserSets(userId)

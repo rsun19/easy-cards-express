@@ -1,11 +1,11 @@
 import express from 'express';
 var router = express.Router();
-import { updateSetName } from '../db/setOperations.js'
+import { updateSetName, getSet } from '../db/setOperations.js'
 import { insertQuestion, updateQuestion } from '../db/questionOperations.js';
 import { editAnswer, insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
 
-router.post('/', authenticateToken, async function(req, res, next) {
+router.post('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const editQuestionInfo = req.body.editQuestion;
     const editAnswerInfo = req.body.editAnswer;
@@ -13,6 +13,12 @@ router.post('/', authenticateToken, async function(req, res, next) {
     const setInfo = req.body.set;
     const setUpdate = req.body.setUpdate
     var isError = false;
+
+    const canAccessSet = await getSet(setInfo.id);
+    if (canAccessSet.userId !== userId) {
+        res.status(403).send("Unauthorized access");
+    }
+
     try {
         editQuestionInfo.forEach(async (card) => {
             const question = card.question;

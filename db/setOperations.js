@@ -1,5 +1,4 @@
 import prisma from '../lib/prisma.js'
-import { getUserFromID } from './getUser.js'
 
 export async function getSetsFromUserId(id) {
   const user = await prisma.user.findFirstOrThrow(
@@ -63,7 +62,10 @@ export async function getSet(id) {
     {
       where: {
         id
-      }
+      },
+      include: {
+        questions: true,
+      },
     }
   )
   return findQuestion;
@@ -77,6 +79,32 @@ export async function deleteSet(id, userId) {
   await prisma.set.delete({
     where: {
       id
+    }
+  });
+}
+
+export async function addUserToViewSet(addedUserId, setId, currentUser) {
+  await prisma.set.update({
+    where: {
+      id: setId,
+      userId: currentUser
+    },
+    data: {
+      visit: {
+        push: addedUserId
+      }
+    }
+  });
+}
+
+export async function removeViewUserFromSet(setId, currentUser, editedSetArray) {
+  await prisma.set.update({
+    where: {
+      id: setId,
+      userId: currentUser
+    },
+    data: {
+      visit: editedSetArray
     }
   });
 }
