@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma.js'
+import { getUserFromID } from './getUser.js';
 
 export async function getFlashcards (setId, userId) {
     const questions = await prisma.set.findFirstOrThrow(
@@ -11,13 +12,16 @@ export async function getFlashcards (setId, userId) {
             }
         }
     );
-    if (questions.userId !== userId && questions.public === 'false') {
-        throw new Error('You cannot access this set.')
-    }
     const flashcards = {
         set: questions,
-        flashcards: []
+        flashcards: [],
+        visit: questions.userId !== userId
     };
+    const user = await getUserFromID(userId);
+    if ((questions.userId !== userId && !questions.visit.includes(user.email)) && questions.public === false) {
+        console.log('hit');
+        throw new Error('You cannot access this set.')
+    }
     for (let i = 0; i < questions.questions.length; i++) {
         const answers = await prisma.question.findFirstOrThrow(
             {

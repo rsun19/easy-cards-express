@@ -16,6 +16,9 @@ import getFlashcardsForSet from './routes/getFlashcardsForSet.js';
 import updateUsername from './routes/updateUsername.js'
 import editSet from './routes/editSet.js';
 import deleteCard from './routes/deleteCard.js';
+import addUserToViewSet from './routes/addUserToViewSet.js';
+import getUserViewList from './routes/getUserViewList.js';
+import removeUserToViewSet from './routes/removeUserToViewSet.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import createUser from './routes/createUser.js'
@@ -55,6 +58,9 @@ app.use("/api/set/delete", deleteSet);
 app.use("/api/set/edit", editSet);
 app.use("/api/card/delete", deleteCard);
 app.use("/api/user/create", createUser);
+app.use("/api/set/view/users", getUserViewList);
+app.use("/api/set/view/users/remove", removeUserToViewSet);
+app.use("/api/set/view/users/add", addUserToViewSet);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
