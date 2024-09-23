@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import { updateSetName, getSet, getSetByName } from '../db/setOperations.js'
+import { updateSetName, getSet, checkSetByName } from '../db/setOperations.js'
 import { insertQuestion, updateQuestion } from '../db/questionOperations.js';
 import { editAnswer, insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
@@ -19,7 +19,7 @@ router.post('/', authenticateToken, async function(req, res) {
         return;
     }
     if (setUpdate) {
-        const taken = await getSetByName({ id: setInfo.id, name: setInfo.name, userId });
+        const taken = await checkSetByName({ id: setInfo.id, name: setInfo.name, userId });
         if (!taken) {
             res.status(403).send("Set name taken");
             return;

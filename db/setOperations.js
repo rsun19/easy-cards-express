@@ -14,7 +14,17 @@ export async function getSetsFromUserId(id) {
   return user
 } 
 
-export async function getSetByName(setInfo) {
+export async function getSetByName(name, userId) {
+  const set = await prisma.set.findFirstOrThrow({
+    where: {
+      name,
+      userId
+    }
+  });
+  return set;
+}
+
+export async function checkSetByName(setInfo) {
   try {
     const set = await prisma.set.findFirstOrThrow({
       where: {
@@ -29,13 +39,13 @@ export async function getSetByName(setInfo) {
       return true;
     }
     return false;
-  } catch {
+  } catch (e) {
     return true;
   }
 }
 
 export async function insertSet (setInfo) {
-  if (!(await getSetByName(setInfo))) {
+  if (!(await checkSetByName(setInfo))) {
     throw new Error("name taken");
   }
   const setCreate = await prisma.set.create({
@@ -54,7 +64,7 @@ export async function updateSetName (id, name, userId) {
   if (findSet.userId !== userId) {
     throw new Error('unauthorized')
   }
-  if (!(await getSetByName({ id, name, userId }))) {
+  if (!(await checkSetByName({ id, name, userId }))) {
     throw new Error("name taken");
   }
   const setUpdateName = await prisma.set.update({
