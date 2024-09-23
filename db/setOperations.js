@@ -14,12 +14,35 @@ export async function getSetsFromUserId(id) {
   return user
 } 
 
+export async function getSetByName(setInfo) {
+  try {
+    const set = await prisma.set.findFirstOrThrow({
+      where: {
+        name: setInfo.name,
+        userId: setInfo.userId
+      }
+    });
+    if (typeof setInfo.id === 'undefined') {
+      return false;
+    }
+    if (set.id === setInfo.id) {
+      return true;
+    }
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 export async function insertSet (setInfo) {
+  if (!(await getSetByName(setInfo))) {
+    throw new Error("name taken");
+  }
   const setCreate = await prisma.set.create({
     data: {
       name: setInfo.name,
       user: {
-        connect: { id: setInfo.user }
+        connect: { id: setInfo.userId }
       }
     }
   })
@@ -30,6 +53,9 @@ export async function updateSetName (id, name, userId) {
   const findSet = await getSet(id);
   if (findSet.userId !== userId) {
     throw new Error('unauthorized')
+  }
+  if (!(await getSetByName({ id, name, userId }))) {
+    throw new Error("name taken");
   }
   const setUpdateName = await prisma.set.update({
     where: {

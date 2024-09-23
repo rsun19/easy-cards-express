@@ -9,7 +9,7 @@ router.post('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const setInfo = req.body.cards;
     try {
-        const set = await insertSet({ name: req.body.title, user: userId })
+        const set = await insertSet({ name: req.body.title, userId: userId });
         const answer_list = [];
         setInfo.forEach(async (card) => {
             const question_arr = card[0];
@@ -23,8 +23,11 @@ router.post('/', authenticateToken, async function(req, res) {
         });
         res.status(200).send("Set created successfully");
     } catch (error) {
-        console.log(error);
-        res.status(403).send("Error putting set in database");
+        if (error.message === 'name taken') {
+            res.status(403).send("Set name taken");
+        } else {
+            res.status(403).send("Error putting set in database");
+        }
     }
 });
 

@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import { updateSetName, getSet } from '../db/setOperations.js'
+import { updateSetName, getSet, getSetByName } from '../db/setOperations.js'
 import { insertQuestion, updateQuestion } from '../db/questionOperations.js';
 import { editAnswer, insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
@@ -12,13 +12,19 @@ router.post('/', authenticateToken, async function(req, res) {
     const newSetInfo = req.body.new;
     const setInfo = req.body.set;
     const setUpdate = req.body.setUpdate
-    var isError = false;
 
     const canAccessSet = await getSet(setInfo.id);
     if (canAccessSet.userId !== userId) {
-        res.status(403).send("Unauthorized access");
+        res.status(401).send("Unauthorized access");
+        return;
     }
-
+    if (setUpdate) {
+        const taken = await getSetByName({ id: setInfo.id, name: setInfo.name, userId });
+        if (!taken) {
+            res.status(403).send("Set name taken");
+            return;
+        }
+    }
     try {
         editQuestionInfo.forEach(async (card) => {
             const question = card.question;
@@ -30,9 +36,9 @@ router.post('/', authenticateToken, async function(req, res) {
         })
     } catch (error) {
         res.status(403).send("Error updating entries");
+        return;
     }
     try {
-        (setUpdate);
         if (setUpdate) {
             await updateSetName(setInfo.id, setInfo.name, userId)
         }
@@ -47,11 +53,9 @@ router.post('/', authenticateToken, async function(req, res) {
         });
     } catch (error) {
         res.status(403).send("Error putting set in database");
-        isError = true;
+        return;
     }
-    if (!isError) {
-        res.status(200).send("Set created successfully");
-    }
+    res.status(200).send("Set created successfully");
 });
 
 export default router;
