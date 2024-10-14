@@ -30,6 +30,7 @@ model Question {
   userId    Int
   set       Set @relation(fields: [setId], references: [id], onDelete: Cascade)
   setId     Int
+  star      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 

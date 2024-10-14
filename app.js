@@ -19,6 +19,7 @@ import deleteCard from './routes/deleteCard.js';
 import addUserToViewSet from './routes/addUserToViewSet.js';
 import getUserViewList from './routes/getUserViewList.js';
 import removeUserToViewSet from './routes/removeUserToViewSet.js';
+import modifyStarredQuestion from './routes/modifyStarredQuestion.js';
 import combineSets from './routes/combineSets.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -63,6 +64,7 @@ app.use("/api/set/view/users", getUserViewList);
 app.use("/api/set/view/users/remove", removeUserToViewSet);
 app.use("/api/set/view/users/add", addUserToViewSet);
 app.use("/api/set/combine", combineSets);
+app.use("/api/modifyStarredQuestion", modifyStarredQuestion);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

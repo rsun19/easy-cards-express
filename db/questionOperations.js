@@ -52,6 +52,22 @@ export async function insertQuestion (question, userId) {
   return questionCreate;
 }
 
+export async function updateQuestionStar (questionInfo, userId) {
+  const findQuestion = await getQuestion(questionInfo.id);
+  if (findQuestion.userId !== userId) {
+    throw new Error('User is not authorized...')
+  }
+  const updateQuestionStar = await prisma.question.update({
+    where: {
+      id: questionInfo.id
+    },
+    data: {
+      star: questionInfo.star
+    }
+  })
+  return updateQuestionStar;
+}
+
 export async function updateQuestion (questionInfo, userId) {
   const findQuestion = await getQuestion(questionInfo.id);
   if (findQuestion.userId !== userId) {

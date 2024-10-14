@@ -17,6 +17,7 @@ CREATE TABLE "Question" (
     "userId" INTEGER NOT NULL,
     "setId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "star" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
@@ -45,6 +46,12 @@ CREATE TABLE "User" (
     "refreshToken" TEXT,
     "blacklistedTokens" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "banned" BOOLEAN NOT NULL DEFAULT false,
+    "bannedReason" TEXT,
+    "deactivated" BOOLEAN NOT NULL DEFAULT false,
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
+    "editShared" INTEGER[],
+    "viewShared" INTEGER[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
