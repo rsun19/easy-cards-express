@@ -4,7 +4,7 @@ import { authenticateToken } from '../jwt/jwt.js';
 import { getSet, removeViewUserFromSet } from '../db/setOperations.js';
 import { getUserFromEmail } from '../db/getUser.js';
 
-router.post('/', authenticateToken, async function(req, res) {
+router.delete('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const removedUserEmail = req.body.email;
     const setId = req.body.setId;

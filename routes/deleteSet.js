@@ -3,7 +3,7 @@ var router = express.Router();
 import { deleteSet } from '../db/setOperations.js'
 import { authenticateToken } from '../jwt/jwt.js';
 
-router.post('/', authenticateToken, async function(req, res) {
+router.delete('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const id = req.body.set;
     try {

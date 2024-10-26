@@ -4,7 +4,7 @@ import { authenticateToken } from '../jwt/jwt.js';
 import { getUserFromUsername } from '../db/usernames/checkForUsername.js';
 import { updateUsername } from '../db/usernames/updateUsername.js';
 
-router.post('/', authenticateToken, async function(req, res) {
+router.put('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const username = req.body.username;
     try {

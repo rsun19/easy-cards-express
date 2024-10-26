@@ -5,7 +5,7 @@ import { insertQuestion, updateQuestion } from '../db/questionOperations.js';
 import { editAnswer, insertAnswer } from '../db/answerOperations.js';
 import { authenticateToken } from '../jwt/jwt.js';
 
-router.post('/', authenticateToken, async function(req, res) {
+router.put('/', authenticateToken, async function(req, res) {
     const userId = req.user;
     const editQuestionInfo = req.body.editQuestion;
     const editAnswerInfo = req.body.editAnswer;

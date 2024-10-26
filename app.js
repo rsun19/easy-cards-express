@@ -54,15 +54,15 @@ app.use("/api/auth/token/request", requestToken);
 app.use("/api/auth/token/refresh", refreshToken);
 app.use("/api/set/create", createSet);
 app.use("/api/sets/get", getSets);
-app.use("/api/username/update", updateUsername)
-app.use("/api/sets/flashcards/get", getFlashcardsForSet)
-app.use("/api/set/delete", deleteSet);
-app.use("/api/set/edit", editSet);
-app.use("/api/card/delete", deleteCard);
-app.use("/api/user/create", createUser);
+app.use("/api/username", updateUsername)
+app.use("/api/sets/flashcards", getFlashcardsForSet)
+app.use("/api/set", deleteSet);
+app.use("/api/set", editSet);
+app.use("/api/card", deleteCard);
+app.use("/api/user", createUser);
 app.use("/api/set/view/users", getUserViewList);
-app.use("/api/set/view/users/remove", removeUserToViewSet);
-app.use("/api/set/view/users/add", addUserToViewSet);
+app.use("/api/set/view/users", removeUserToViewSet);
+app.use("/api/set/view/users", addUserToViewSet);
 app.use("/api/set/combine", combineSets);
 app.use("/api/modifyStarredQuestion", modifyStarredQuestion);
 
