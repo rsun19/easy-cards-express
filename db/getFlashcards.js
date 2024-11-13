@@ -19,9 +19,9 @@ export async function getFlashcards (setId, userId) {
     };
     const user = await getUserFromID(userId);
     if ((questions.userId !== userId && !questions.visit.includes(user.email)) && questions.public === false) {
-        console.log('hit');
         throw new Error('You cannot access this set.')
     }
+    questions.questions.sort((a, b) => a.id - b.id);
     for (let i = 0; i < questions.questions.length; i++) {
         const answers = await prisma.question.findFirstOrThrow(
             {
